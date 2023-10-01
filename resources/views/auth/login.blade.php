@@ -57,6 +57,11 @@
                                     <i class="fa fa-twitter"></i>
                                     Twitter
                                 </a>
+                                </a>
+                                <a href="{{ route('social.redirect', ['google']) }}" class="btn btn-success btn-google">
+                                    <i class="fa fa-google"></i>
+                                    Google
+                                </a>
                             </div>
                         </div>
 

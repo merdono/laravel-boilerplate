@@ -37,15 +37,12 @@ class PurchaseOrderController extends Controller
     }
 
     public function getPurchaseOrderLineShow($id){
-        
     }
 
     public function getPurchaseOrderLineEdit($id){
-        
     }
 
     public function getPurchaseOrderLineDestroy($id){
-        
     }
 
     public function getPurchaseOrderLineCreate(){
@@ -54,7 +51,6 @@ class PurchaseOrderController extends Controller
     }
 
     public function postPurchaseOrderLineUpdate(){
-        
     }
 
     public function postPurchaseOrderLineInsert(Request $request, PurchaseOrderLine $purchaseOrderLine){

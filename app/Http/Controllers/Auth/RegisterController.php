@@ -10,6 +10,7 @@ use App\Models\Auth\User\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use PharIo\Manifest\Email;
 use Ramsey\Uuid\Uuid;
 
 class RegisterController extends Controller
@@ -95,16 +96,24 @@ class RegisterController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function register(Request $request)
-    {
+    public function register(Request $request){
         $this->validator($request->all())->validate();
 
-        event(new Registered($user = $this->create($request->all())));
+        $google2fa = app('pragmarx.google2fa');
+        
+        $registration_data = $request->all();
 
-        $this->guard()->login($user);
+        $registration_data["google2fa_secret"] = $google2fa->generateSecretKey();
 
-        return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
+        $request->session()->flash('registration_data', $registration_data);
+
+        $QR_Image = $google2fa->getQRCodeInLine(
+            config('app.name'),
+            $registration_data['email'],
+            $registration_data['google2fa_secret']
+        );
+
+        return view('google2fa.register', ['QR_Image' => $QR_Image, 'secret' => $registration_data['google2fa_secret']]);
     }
 
     /**
